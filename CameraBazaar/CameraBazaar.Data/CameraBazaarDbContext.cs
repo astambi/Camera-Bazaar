@@ -1,9 +1,10 @@
 ﻿namespace CameraBazaar.Data
 {
+    using CameraBazaar.Data.Models;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class CameraBazaarDbContext : IdentityDbContext
+    public class CameraBazaarDbContext : IdentityDbContext<User> // Identity => App User
     {
         public CameraBazaarDbContext(DbContextOptions<CameraBazaarDbContext> options)
             : base(options)

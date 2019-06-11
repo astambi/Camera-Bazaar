@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CameraBazaar.Data\CameraBazaar.Data.csproj" />
+    <ProjectReference Include="..\CameraBazaar.Services\CameraBazaar.Services.csproj" />
   </ItemGroup>
 
 </Project>

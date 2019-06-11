@@ -3,6 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
+    using CameraBazaar.Data.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
@@ -13,14 +14,16 @@
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        // IdentityUser => App User
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            // IdentityUser => App User
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -55,6 +58,7 @@
             [Phone]
             [RegularExpression(@"^\+\d{10,12}$",
                 ErrorMessage = "The {0} must start with '+' and contain between 10 and 12 digits.")]
+            [Display(Name = "Phone number")]
             public string Phone { get; set; }
 
             [Required]
@@ -82,7 +86,8 @@
             if (this.ModelState.IsValid)
             {
                 // Custom User Registration
-                var user = new IdentityUser
+                //var user = new IdentityUser
+                var user = new User
                 {
                     UserName = this.Input.Username,
                     Email = this.Input.Email,

@@ -1,6 +1,7 @@
 ﻿namespace CameraBazaar.Web.Areas.Identity.Pages.Account
 {
     using System.Threading.Tasks;
+    using CameraBazaar.Data.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        // IdentityUser => App User
+        private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
-        public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
+        // IdentityUser => App User
+        public LogoutModel(SignInManager<User> signInManager, ILogger<LogoutModel> logger)
         {
             this._signInManager = signInManager;
             this._logger = logger;

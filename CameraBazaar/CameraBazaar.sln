@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraBazaar.Web", "CameraB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraBazaar.Data", "CameraBazaar.Data\CameraBazaar.Data.csproj", "{DB1AA7EC-A133-4134-B48B-9F77A2B76A41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraBazaar.Services", "CameraBazaar.Services\CameraBazaar.Services.csproj", "{D38BC838-C63A-448A-B1BB-206501252D9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DB1AA7EC-A133-4134-B48B-9F77A2B76A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB1AA7EC-A133-4134-B48B-9F77A2B76A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB1AA7EC-A133-4134-B48B-9F77A2B76A41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D38BC838-C63A-448A-B1BB-206501252D9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D38BC838-C63A-448A-B1BB-206501252D9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D38BC838-C63A-448A-B1BB-206501252D9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D38BC838-C63A-448A-B1BB-206501252D9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

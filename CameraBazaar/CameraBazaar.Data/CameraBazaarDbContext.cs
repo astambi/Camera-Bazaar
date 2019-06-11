@@ -11,9 +11,22 @@
         {
         }
 
+        public DbSet<Camera> Cameras { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder
+               .Entity<Camera>()
+               .HasOne(c => c.User)
+               .WithMany(u => u.Cameras)
+               .HasForeignKey(c => c.UserId);
+
+            builder
+                .Entity<Camera>()
+                .Property(c => c.Price)
+                .HasColumnType("decimal(18, 2)"); // decimal
         }
     }
 }

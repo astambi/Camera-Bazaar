@@ -1,0 +1,21 @@
+﻿@model IEnumerable<CameraListingModel>
+
+@{
+    ViewData["Title"] = "All cameras";
+}
+
+<h1>All cameras</h1>
+
+<section>
+    @if (!Model.Any())
+    {
+        <h3>No cameras</h3>
+    }
+    else
+    {
+        @foreach (var camera in Model)
+        {
+            <partial name="../Shared/_CameraCardPartial" model="camera" />
+        }
+    }
+</section>

@@ -1,8 +1,10 @@
 ﻿namespace CameraBazaar.Web
 {
+    using AutoMapper;
     using CameraBazaar.Data;
     using CameraBazaar.Data.Models;
     using CameraBazaar.Web.Infrastructure.Extensions;
+    using CameraBazaar.Web.Infrastructure.FIlters;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -36,8 +38,6 @@
                     .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
             services
-                //.AddDefaultIdentity<IdentityUser>()
-                //.AddIdentity<IdentityUser, IdentityRole>() // Identity
                 .AddIdentity<User, IdentityRole>() // IdentityUser => App User
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<CameraBazaarDbContext>()
@@ -46,19 +46,30 @@
             services
                 .Configure<IdentityOptions>(options =>
                 {
-                    // Password settings.
+                    // Password settings
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
-                    // User settings.
+                    // User settings
                     options.User.RequireUniqueEmail = true;
                 });
+
+            // App Services
+            services.AddDomainServices();
+
+            // AutoMapper
+            services.AddAutoMapper(typeof(Startup));
+
+            // Routing with lowercase Urls
+            services.AddRouting(options => options.LowercaseUrls = true);
 
             services
                 .AddMvc(options =>
                 {
                     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+                    options.Filters.Add<LogAttribute>(); // global Logs
+                    options.Filters.Add<TimerAttribute>(); // global Action Timer
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 // Identity
@@ -77,17 +88,12 @@
                     options.LogoutPath = $"/Identity/Account/Logout";
                     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
                 });
-
-            // App Services
-            services.AddDomainServices(); // register services with reflexion
-
-            // Routing with lowercase Urls
-            services.AddRouting(options => options.LowercaseUrls = true);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseDatabaseMigration(); // Database Migrate
+            // Database Migrations
+            app.UseDatabaseMigration();
 
             if (env.IsDevelopment())
             {
@@ -108,6 +114,11 @@
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

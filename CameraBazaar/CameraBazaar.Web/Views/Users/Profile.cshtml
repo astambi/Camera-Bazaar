@@ -1,0 +1,51 @@
+﻿@model UserDetailsWithCamerasModel
+
+@{
+    ViewData["Title"] = "Profile " + Model.UserDetails.UserName;
+}
+
+<h1 class="d-flex flex-wrap justify-content-between align-items-center">
+    @Model.UserDetails.UserName's Profile
+    @if (Model.IsOwner)
+    {
+        <a asp-controller="Users" asp-action=@(nameof(UsersController.Edit)) class="btn btn-outline-primary">Edit profile</a>
+        @*@Html.Partial("_LastLoginTime", Model.LastLoginTime)*@
+    }
+</h1>
+
+<section>
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="UserDetails.Email" class="col-md-4 font-weight-bold"></label>
+            @Model.UserDetails.Email
+        </li>
+        <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="UserDetails.PhoneNumber" class="col-md-4 font-weight-bold"></label>
+            @Model.UserDetails.PhoneNumber
+        </li>
+        <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+            <label class="col-md-4 font-weight-bold">Cameras</label>
+            @Model.CamerasInStockCount in stock / @Model.CamerasOutOfStockCount out of stock
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Cameras:</h3>
+    @if (Model.Cameras.Any())
+    {
+        @foreach (var camera in Model.Cameras)
+        {
+            camera.HasCrud = Model.IsOwner;
+            <partial name="../Shared/_CameraCardPartial" model="camera" />
+        }
+    }
+    else
+    {
+        <p>
+            The user is not selling any cameras. Go to
+            <a asp-controller="Cameras" asp-action=@nameof(CamerasController.All)>Cameras</a>
+            to find more offers of other users.
+        </p>
+    }
+</section>

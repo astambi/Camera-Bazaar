@@ -1,0 +1,125 @@
+﻿@model CameraFormViewModel
+
+@{
+    ViewData["Title"] = Model.Action + " camera";
+
+    const string delete = nameof(CamerasController.Delete);
+    var isDisabled = Model.Action == delete;
+    const string lightMeteringName = nameof(Model.LightMeteringSelectList);
+    var lightMeteringValues = Enum.GetValues(typeof(LightMetering)).Cast<LightMetering>();
+}
+
+<h1>@Model.Action camera</h1>
+
+@if (Model.Action == delete)
+{
+    <h3 class="text-danger">Are you sure you want to delete this camera?</h3>
+}
+
+<form asp-controller="Cameras" asp-action="@Model.Action" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="d-flex flex-wrap justify-content-between">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Make" class="control-label"></label>
+                @*EnumSelectList*@
+                <select asp-for="Make" asp-items="Html.GetEnumSelectList<CameraMake>()" class="form-control" disabled="@isDisabled"></select>
+                <span asp-validation-for="Make" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Model" class="control-label"></label>
+                <input asp-for="Model" class="form-control" disabled="@isDisabled" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinShutterSpeed" class="control-label"></label>
+                <input asp-for="MinShutterSpeed" class="form-control" min="1" max="30" disabled="@isDisabled" />
+                <span asp-validation-for="MinShutterSpeed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxShutterSpeed" class="control-label"></label>
+                <input asp-for="MaxShutterSpeed" class="form-control" min="2000" max="8000" disabled="@isDisabled" />
+                <span asp-validation-for="MaxShutterSpeed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinIso" class="control-label"></label>
+                @*EnumSelectList*@
+                <select asp-for="MinIso" asp-items="Html.GetEnumSelectList<MinIso>()" class="form-control" disabled="@isDisabled"></select>
+                <span asp-validation-for="MinIso" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxIso" class="control-label"></label>
+                <input asp-for="MaxIso" class="form-control" min="200" max="409600" step="100" disabled="@isDisabled" />
+                <span asp-validation-for="MaxIso" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoResolution" class="control-label"></label>
+                <input asp-for="VideoResolution" class="form-control" disabled="@isDisabled" />
+                <span asp-validation-for="VideoResolution" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsFullFrame" disabled="@isDisabled" />
+                    @Html.DisplayNameFor(model => model.IsFullFrame)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="LightMetering" class="control-label"></label>
+                @*MultipleEnumSelectList*@
+                <div>
+                    @foreach (var enumValue in lightMeteringValues)
+                    {
+                        if (enumValue != LightMetering.None)
+                        {
+                            <label class="form-check-inline">
+                                <input name="@lightMeteringName" value="@((int)enumValue)" type="checkbox" class="form-check-input" disabled="@isDisabled" />
+                                @enumValue.ToDisplayName()
+                            </label>
+                        }
+                    }
+                </div>
+                @if (Model.LightMetering != 0)
+                {
+                    <small>Current selection: @Model.LightMetering.ToDisplayName()</small>
+                }
+                <span asp-validation-for="LightMetering" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" type="number" min="0" step="0.01" disabled="@isDisabled" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" min="0" max="100" disabled="@isDisabled" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="5" disabled="@isDisabled"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl" class="control-label"></label>
+                <input asp-for="ImageUrl" class="form-control" disabled="@isDisabled" />
+                @if (Model.ImageUrl != null)
+                {
+                    <div class="text-center"><img src="@Model.ImageUrl" width="200" alt="Image Url" /></div>
+                }
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <partial name="../Shared/_FormSubmitPartial" model="Model.Action" />
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="All">Back to Cameras</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

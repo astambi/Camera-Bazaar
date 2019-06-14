@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraBazaar.Web", "CameraBazaar.Web\CameraBazaar.Web.csproj", "{6F7AAE69-25F3-4C2C-A5FC-73386E54F213}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CameraBazaar.Web", "CameraBazaar.Web\CameraBazaar.Web.csproj", "{6F7AAE69-25F3-4C2C-A5FC-73386E54F213}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraBazaar.Data", "CameraBazaar.Data\CameraBazaar.Data.csproj", "{DB1AA7EC-A133-4134-B48B-9F77A2B76A41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CameraBazaar.Data", "CameraBazaar.Data\CameraBazaar.Data.csproj", "{DB1AA7EC-A133-4134-B48B-9F77A2B76A41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraBazaar.Services", "CameraBazaar.Services\CameraBazaar.Services.csproj", "{D38BC838-C63A-448A-B1BB-206501252D9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CameraBazaar.Services", "CameraBazaar.Services\CameraBazaar.Services.csproj", "{D38BC838-C63A-448A-B1BB-206501252D9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraBazaar.Common", "CameraBazaar.Common\CameraBazaar.Common.csproj", "{E377018D-8E02-4A65-A98F-E3D724B6FF1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{D38BC838-C63A-448A-B1BB-206501252D9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D38BC838-C63A-448A-B1BB-206501252D9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D38BC838-C63A-448A-B1BB-206501252D9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E377018D-8E02-4A65-A98F-E3D724B6FF1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E377018D-8E02-4A65-A98F-E3D724B6FF1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E377018D-8E02-4A65-A98F-E3D724B6FF1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E377018D-8E02-4A65-A98F-E3D724B6FF1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

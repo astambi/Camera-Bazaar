@@ -6,7 +6,7 @@
 
     public class User : IdentityUser // Custom App User
     {
-        //public DateTime? LastLogin { get; set; }
+        public DateTime? LastLoginTime { get; set; }
 
         public ICollection<Camera> Cameras => new List<Camera>();
     }

@@ -1,0 +1,19 @@
+﻿@model string
+@*action*@
+
+@{
+    const string edit = nameof(CamerasController.Edit);
+    const string delete = nameof(CamerasController.Delete);
+    var cssStyle = "primary";
+
+    switch (Model)
+    {
+        case edit: cssStyle = "warning"; break;
+        case delete: cssStyle = "danger"; break;
+        default: break;
+    }
+}
+
+<div class="form-group">
+    <input type="submit" value="@Model" class="btn btn-block btn-outline-@(cssStyle)" />
+</div>

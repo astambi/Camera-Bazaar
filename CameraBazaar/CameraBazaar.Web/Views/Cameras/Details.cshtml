@@ -1,0 +1,66 @@
+﻿@model CameraDetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="d-flex flex-wrap justify-content-between font-weight-bold">
+    <span>@Model.Make @Model.Model</span>
+    <span>@Model.Price.ToCurrency()</span>
+
+    @if (Model.InStock)
+    {<span class="text-uppercase text-success">In stock</span> }
+    else
+    { <span class="text-uppercase text-danger">Out of stock</span>}
+</h1>
+
+<article class=" container">
+    <header>
+        <div class="d-flex flex-wrap justify-content-between">
+            <img src="@Model.ImageUrl" height="200" alt="@Model.Make @Model.Model" />
+
+            <h3>
+                Seller
+                <a asp-controller="Users" asp-action=@nameof(UsersController.Profile)
+                   asp-route-username=@Model.SellerUsername>@(Model.SellerUsername.ToUpper())</a>
+            </h3>
+
+            @if (Model.HasCrud)
+            {<partial name="../Shared/_CameraCrudPartial" model="Model.Id" />}
+        </div>
+    </header>
+
+    <ul class="list-group">
+        <li class="list-group-item d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="IsFullFrame" class="col-md-4 font-weight-bold"></label>
+            @(Model.IsFullFrame ? "Yes" : "No")
+        </li>
+        <li class="list-group-item d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="MinShutterSpeed" class="col-md-4 font-weight-bold"></label>
+            @Model.MinShutterSpeed.ToNumber()"
+        </li>
+        <li class="list-group-item d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="MaxShutterSpeed" class="col-md-4 font-weight-bold"></label>
+            1/@Model.MaxShutterSpeed
+        </li>
+        <li class="list-group-item d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="MinISO" class="col-md-4 font-weight-bold"></label>
+            @((int)Model.MinISO)
+        </li>
+        <li class="list-group-item d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="MaxISO" class="col-md-4 font-weight-bold"></label>
+            @Model.MaxISO.ToNumber()
+        </li>
+        <li class="list-group-item d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="VideoResolution" class="col-md-4 font-weight-bold"></label>
+            @Model.VideoResolution
+        </li>
+        <li class="list-group-item d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="LightMetering" class="col-md-4 font-weight-bold"></label>
+            @Model.LightMetering.ToDisplayName()
+        </li>
+        <li class="list-group-item d-flex flex-wrap flex-md-nowrap">
+            <label asp-for="Description" class="col-md-4 font-weight-bold"></label>
+            <div class="text-break">@Model.Description</div>
+        </li>
+    </ul>
+</article>

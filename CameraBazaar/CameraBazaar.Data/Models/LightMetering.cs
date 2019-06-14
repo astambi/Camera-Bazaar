@@ -8,6 +8,7 @@
     [Flags]
     public enum LightMetering
     {
+        None = 0,
         Spot = 1,
         [Display(Name = "Center Weighted")]
         CenterWeighted = 2,

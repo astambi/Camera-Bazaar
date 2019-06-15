@@ -4,14 +4,14 @@
     ViewData["Title"] = "Profile " + Model.UserDetails.UserName;
 }
 
-<h1 class="d-flex flex-wrap justify-content-between align-items-center">
-    @Model.UserDetails.UserName's Profile
+<header class="d-flex flex-wrap justify-content-between align-items-center py-2">
+    <h1>@Model.UserDetails.UserName's Profile</h1>
     @if (Model.IsOwner)
     {
+        <partial name="_LastLoginTimePartial" for="UserDetails.LastLoginTime" />
         <a asp-controller="Users" asp-action=@(nameof(UsersController.Edit)) class="btn btn-outline-primary">Edit profile</a>
-        @*@Html.Partial("_LastLoginTime", Model.LastLoginTime)*@
     }
-</h1>
+</header>
 
 <section>
     <ul class="list-group">
@@ -31,7 +31,7 @@
 </section>
 
 <section>
-    <h3>Cameras:</h3>
+    <h3 class="pt-3">Cameras:</h3>
     @if (Model.Cameras.Any())
     {
         @foreach (var camera in Model.Cameras)

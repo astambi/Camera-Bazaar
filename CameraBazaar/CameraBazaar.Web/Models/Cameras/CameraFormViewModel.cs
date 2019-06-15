@@ -8,7 +8,7 @@
     using CameraBazaar.Services.Models.Cameras;
     using CameraBazaar.Web.Controllers;
 
-    public class CameraFormViewModel : IHaveCustomMapping
+    public class CameraFormViewModel : IMapFrom<CameraEditDeleteModel>
     {
         public CameraMake Make { get; set; } // enum
 
@@ -58,6 +58,7 @@
 
         [Required]
         [Display(Name = "Light metering")]
+        [IgnoreMap]
         public IEnumerable<LightMetering> LightMeteringSelectList { get; set; } = new List<LightMetering>(); // multiple enums
 
         [Display(Name = "Light metering")]
@@ -78,11 +79,7 @@
         [Display(Name = "Image URL")]
         public string ImageUrl { get; set; }
 
+        [IgnoreMap]
         public string Action { get; set; } = nameof(CamerasController.Create); // default create
-
-        public void ConfigureMapping(Profile mapper)
-            => mapper.CreateMap<CameraEditDeleteModel, CameraFormViewModel>()
-            .ForMember(dest => dest.Action, opt => opt.Ignore())
-            .ForMember(dest => dest.LightMeteringSelectList, opt => opt.Ignore());
     }
 }

@@ -34,7 +34,7 @@
             })
             .FirstOrDefault();
 
-        public void UpdateLoginTime(string userName)
+        public void UpdateLastLoginTime(string userName)
         {
             var user = this.db.Users.Where(u => u.UserName == userName).FirstOrDefault();
 

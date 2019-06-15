@@ -81,7 +81,7 @@
         public bool Exists(int id)
             => this.db.Cameras.Any(c => c.Id == id);
 
-        public bool ExistsWithOwner(int id, string userId)
+        public bool Exists(int id, string userId)
             => this.db.Cameras.Any(c => c.Id == id && c.UserId == userId);
 
         public CameraDetailsModel GetByIdDetails(int id)

@@ -1,0 +1,10 @@
+﻿@model DateTime?
+
+@if (Model == null)
+{
+    <h6 class="text-primary px-2">First login</h6>
+}
+else
+{
+    <h6 class="text-primary px-2">Last login: @(Model.Value.ToLocalTime())</h6>
+}

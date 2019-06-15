@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CameraBazaar.Data.Models;
+    using CameraBazaar.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -18,12 +19,17 @@
         // IdentityUser => App User
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IUserService userService;
 
         // IdentityUser => App User
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(
+            SignInManager<User> signInManager,
+            ILogger<LoginModel> logger,
+            IUserService userService)
         {
             this._signInManager = signInManager;
             this._logger = logger;
+            this.userService = userService;
         }
 
         [BindProperty]
@@ -84,6 +90,10 @@
                 if (result.Succeeded)
                 {
                     this._logger.LogInformation("User logged in.");
+
+                    // Update User LastLoginTime
+                    this.userService.UpdateLastLoginTime(this.Input.Username);
+
                     return this.LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

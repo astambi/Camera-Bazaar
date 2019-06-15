@@ -13,6 +13,7 @@
     public class CamerasController : Controller
     {
         private const string CameraFormView = "CameraForm";
+        private const string LightMeteringRequired = "The Light metering is required.";
 
         private readonly ICameraService cameraService;
         private readonly UserManager<User> userManager;
@@ -62,7 +63,7 @@
         {
             if (!cameraModel.LightMeteringSelectList.Any())
             {
-                this.ModelState.AddModelError(nameof(cameraModel.LightMetering), "The Light metering is required.");
+                this.ModelState.AddModelError(nameof(cameraModel.LightMetering), LightMeteringRequired);
             }
 
             if (!this.ModelState.IsValid)
@@ -90,25 +91,7 @@
         }
 
         public IActionResult Edit(int id)
-        {
-            // Camera does not exist
-            if (!this.cameraService.Exists(id))
-            {
-                return this.RedirectToAction(nameof(All));
-            }
-
-            // Current user is not camera owner
-            var currentUserId = this.userManager.GetUserId(this.User);
-            if (currentUserId == null
-                || !this.cameraService.ExistsWithOwner(id, currentUserId))
-            {
-                return this.RedirectToAction(nameof(Details), new { id });
-            }
-
-            var cameraModel = this.LoadCameraFormModel(id, nameof(Edit));
-
-            return this.View(CameraFormView, cameraModel);
-        }
+            => this.LoadEditDeleteForm(id, nameof(Edit));
 
         [HttpPost]
         public IActionResult Edit(int id, CameraFormViewModel cameraModel)
@@ -122,14 +105,14 @@
             // Current user is not camera owner
             var currentUserId = this.userManager.GetUserId(this.User);
             if (currentUserId == null
-                || !this.cameraService.ExistsWithOwner(id, currentUserId))
+                || !this.cameraService.Exists(id, currentUserId))
             {
                 return this.RedirectToAction(nameof(Details), new { id });
             }
 
             if (!cameraModel.LightMeteringSelectList.Any())
             {
-                this.ModelState.AddModelError(nameof(cameraModel.LightMetering), "The Light metering is required.");
+                this.ModelState.AddModelError(nameof(cameraModel.LightMetering), LightMeteringRequired);
             }
 
             // Model is not valid
@@ -159,26 +142,7 @@
         }
 
         public IActionResult Delete(int id)
-        {
-            // Camera does not exist
-            if (!this.cameraService.Exists(id))
-            {
-                return this.RedirectToAction(nameof(All));
-            }
-
-            // Current user is not camera owner
-            var currentUserId = this.userManager.GetUserId(this.User);
-            if (currentUserId == null
-                || !this.cameraService.ExistsWithOwner(id, currentUserId))
-            {
-                return this.RedirectToAction(nameof(Details), new { id });
-            }
-
-            var cameraModel = this.LoadCameraFormModel(id, nameof(Delete));
-
-
-            return this.View(CameraFormView, cameraModel);
-        }
+            => this.LoadEditDeleteForm(id, nameof(Delete));
 
         [HttpPost]
         public IActionResult Delete(int id, CameraFormViewModel cameraModel)
@@ -192,7 +156,7 @@
             // Current user is not camera owner
             var currentUserId = this.userManager.GetUserId(this.User);
             if (currentUserId == null
-                || !this.cameraService.ExistsWithOwner(id, currentUserId))
+                || !this.cameraService.Exists(id, currentUserId))
             {
                 return this.RedirectToAction(nameof(Details), new { id });
             }
@@ -202,13 +166,33 @@
             return this.RedirectToAction(nameof(All));
         }
 
-        private CameraFormViewModel LoadCameraFormModel(int id, string action)
+        private CameraFormViewModel GetCameraFormModel(int id, string action)
         {
             var camera = this.cameraService.GetById(id);
             var cameraModel = this.mapper.Map<CameraFormViewModel>(camera);
             cameraModel.Action = action;
-
             return cameraModel;
+        }
+
+        private IActionResult LoadEditDeleteForm(int id, string action)
+        {
+            // Camera does not exist
+            if (!this.cameraService.Exists(id))
+            {
+                return this.RedirectToAction(nameof(All));
+            }
+
+            // Current user is not camera owner
+            var currentUserId = this.userManager.GetUserId(this.User);
+            if (currentUserId == null
+                || !this.cameraService.Exists(id, currentUserId))
+            {
+                return this.RedirectToAction(nameof(Details), new { id });
+            }
+
+            var cameraModel = this.GetCameraFormModel(id, action);
+
+            return this.View(CameraFormView, cameraModel);
         }
     }
 }

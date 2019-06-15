@@ -6,6 +6,6 @@
     {
         UserDetailsWithCamerasModel GetUserDetailsWithCameras(string username);
 
-        void UpdateLoginTime(string userName);
+        void UpdateLastLoginTime(string userName);
     }
 }

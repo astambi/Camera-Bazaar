@@ -26,7 +26,7 @@
 
         bool Exists(int id);
 
-        bool ExistsWithOwner(int id, string userId);
+        bool Exists(int id, string userId);
 
         CameraDetailsModel GetByIdDetails(int id);
 

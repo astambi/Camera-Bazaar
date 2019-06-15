@@ -8,24 +8,28 @@
     <span>@Model.Price.ToCurrency()</span>
 
     @if (Model.InStock)
-    {<span class="text-uppercase text-success">In stock</span> }
+    {
+        <span class="text-uppercase text-success">In stock</span>
+    }
     else
-    { <span class="text-uppercase text-danger">Out of stock</span>}
+    {
+        <span class="text-uppercase text-danger">Out of stock</span>
+    }
 </h1>
 
 <article class=" container">
     <header>
         <div class="d-flex flex-wrap justify-content-between">
             <img src="@Model.ImageUrl" height="200" alt="@Model.Make @Model.Model" />
-
             <h3>
                 Seller
                 <a asp-controller="Users" asp-action=@nameof(UsersController.Profile)
                    asp-route-username=@Model.SellerUsername>@(Model.SellerUsername.ToUpper())</a>
             </h3>
-
             @if (Model.HasCrud)
-            {<partial name="../Shared/_CameraCrudPartial" model="Model.Id" />}
+            {
+                <partial name="../Shared/_CameraCrudPartial" for="Id" />
+            }
         </div>
     </header>
 

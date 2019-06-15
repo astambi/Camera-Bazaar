@@ -2,8 +2,10 @@
 {
     using System;
     using System.Threading.Tasks;
+    using AutoMapper;
     using CameraBazaar.Data.Models;
     using CameraBazaar.Services;
+    using CameraBazaar.Web.Models.Users;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -11,40 +13,37 @@
     [Authorize]
     public class UsersController : Controller
     {
-        private readonly ICameraService cameraService;
-        private readonly IUserService userService;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IUserService userService;
+        private readonly IMapper mapper;
 
         public UsersController(
-            ICameraService cameraService,
-            IUserService userService,
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            IUserService userService,
+            IMapper mapper)
         {
-            this.cameraService = cameraService;
-            this.userService = userService;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.userService = userService;
+            this.mapper = mapper;
         }
-
-        public IActionResult Index()
-            => this.View();
 
         public async Task<IActionResult> Profile(string username)
         {
-            var currentUser = await this.userManager.GetUserAsync(this.User);
-            if (currentUser == null)
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
+                return this.RedirectToAction(nameof(Profile));
             }
 
-            username = username ?? currentUser.UserName; // current user profile
+            username = username ?? user.UserName; // current user profile
 
             var profileData = this.userService.GetUserDetailsWithCameras(username);
             if (profileData == null)
             {
-                return this.NotFound($"User with username {username} does not exist");
+                return this.RedirectToAction(nameof(Profile));
             }
 
             // Is owner
@@ -58,13 +57,64 @@
 
         public async Task<IActionResult> Edit()
         {
-            var currentUser = await this.userManager.GetUserAsync(this.User);
-            if (currentUser == null)
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
-            return this.View();
+            var model = this.mapper.Map<UserEditViewModel>(user);
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserEditViewModel model)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return this.RedirectToAction(nameof(Profile));
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            // Update Email
+            if (model.Email != user.Email)
+            {
+                var setEmailResult = await this.userManager.SetEmailAsync(user, model.Email);
+                if (!setEmailResult.Succeeded)
+                {
+                    return this.View(model);
+                }
+            }
+
+            // Update phonenumber
+            if (model.PhoneNumber != user.PhoneNumber)
+            {
+                var setPhoneResult = await this.userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
+                if (!setPhoneResult.Succeeded)
+                {
+                    return this.View(model);
+                }
+            }
+
+            // Update password
+            if (!string.IsNullOrWhiteSpace(model.NewPassword))
+            {
+                var changePasswordResult = await this.userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                if (!changePasswordResult.Succeeded)
+                {
+                    return this.View(model);
+                }
+            }
+
+            await this.signInManager.RefreshSignInAsync(user);
+
+            return this.RedirectToAction(nameof(Profile));
         }
     }
 }

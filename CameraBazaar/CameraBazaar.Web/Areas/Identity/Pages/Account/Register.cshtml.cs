@@ -73,7 +73,7 @@
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password",
+            [Compare(nameof(Password),
                 ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }

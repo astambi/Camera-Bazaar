@@ -1,7 +1,7 @@
 ﻿@model int
 @*camera id*@
 
-<div class="col-md-2">
+<div>
     <a asp-controller="Cameras" asp-action=@nameof(CamerasController.Edit)
        asp-route-id=@Model class="btn btn-outline-primary btn-block">Edit</a>
     <a asp-controller="Cameras" asp-action=@nameof(CamerasController.Delete)

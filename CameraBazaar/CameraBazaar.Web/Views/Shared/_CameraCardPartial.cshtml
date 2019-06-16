@@ -1,10 +1,10 @@
 ﻿@model CameraListingModel
 
-<article class="d-flex flex-wrap border-bottom p-2">
-    <header class="col-md-3">
-        <img src="@Model.ImageUrl" alt="@Model.Make @Model.Model" height="150" />
-    </header>
-    <div class="col flex-wrap">
+<article class="d-flex flex-wrap border-bottom py-3 justify-content-around">
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2">
+        <img src="@Model.ImageUrl" alt="@Model.Make @Model.Model" class="w-100" />
+    </div>
+    <div class="col-md-6 col-lg-7 col-xl-8 flex-wrap">
         <div class="d-flex flex-wrap justify-content-between">
             <h3>@Model.Make @Model.Model</h3>
             <h3>@Model.Price.ToCurrency()</h3>
@@ -24,7 +24,10 @@
             }
         </div>
     </div>
-
     @if (Model.HasCrud)
-    {<partial name="_CameraCrudPartial" for="Id" />}
+    {
+        <div class="col">
+            <partial name="_CameraCrudPartial" for="Id" />
+        </div>
+    }
 </article>

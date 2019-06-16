@@ -1,0 +1,36 @@
+﻿@model CameraDetailsModel
+
+<ul class="list-group">
+    <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+        <label asp-for="IsFullFrame" class="col-md-4 font-weight-bold"></label>
+        @(Model.IsFullFrame ? "Yes" : "No")
+    </li>
+    <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+        <label asp-for="MinShutterSpeed" class="col-md-4 font-weight-bold"></label>
+        @Model.MinShutterSpeed.ToNumber()"
+    </li>
+    <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+        <label asp-for="MaxShutterSpeed" class="col-md-4 font-weight-bold"></label>
+        1/@Model.MaxShutterSpeed
+    </li>
+    <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+        <label asp-for="MinISO" class="col-md-4 font-weight-bold"></label>
+        @((int)Model.MinISO)
+    </li>
+    <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+        <label asp-for="MaxISO" class="col-md-4 font-weight-bold"></label>
+        @Model.MaxISO.ToNumber()
+    </li>
+    <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+        <label asp-for="VideoResolution" class="col-md-4 font-weight-bold"></label>
+        @Model.VideoResolution
+    </li>
+    <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+        <label asp-for="LightMetering" class="col-md-4 font-weight-bold"></label>
+        @Model.LightMetering.ToDisplayName()
+    </li>
+    <li class="list-group-item list-group-item-action d-flex flex-wrap flex-md-nowrap">
+        <label asp-for="Description" class="col-md-4 font-weight-bold"></label>
+        <div class="text-break">@Model.Description</div>
+    </li>
+</ul>

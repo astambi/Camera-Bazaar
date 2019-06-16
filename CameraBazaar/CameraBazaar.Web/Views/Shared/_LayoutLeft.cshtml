@@ -17,51 +17,52 @@
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Camera Bazaar</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-
-                    <ul class="navbar-nav flex-grow-1">
+<body class="mb-0">
+    <section class="container-fluid d-flex flex-wrap justify-content-between">
+        <header class="col-xs-2 col-sm-3 col-lg-2 col-xl-2 m-0 p-0 box-shadow">
+            <nav class="navbar-light bg-white text-left d-flex flex-column align-content-stretch p-3">
+                <div>
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Camera Bazaar</a>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav py-lg-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cameras" asp-action="All">Cameras</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cameras" asp-action="All">All Cameras</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Cameras" asp-action="Create">Add</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action=@nameof(UsersController.Profile)>My Profile</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action=@nameof(UsersController.Profile)>Profile</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action=@nameof(UsersController.Edit)>Edit Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cameras" asp-action="Create">Add Camera</a>
                             </li>
                         }
                     </ul>
+                    <div>
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            </nav>
+        </header>
+        <section class="col d-flex flex-column">
+            <section class="py-3 mb-5">
+                <partial name="_CookieConsentPartial" />
+                <main role="main" class="container mb-5">
+                    @RenderBody()
+                </main>
+            </section>
 
-    <footer class="border-top footer text-muted">
-        <div class="container text-center">
-            &copy; 2019 - Camera Bazaar - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+            <footer class="border-top footer text-muted mt-5">
+                <div class="container text-center">
+                    &copy; 2019 - Camera Bazaar - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
+        </section>
+    </section>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

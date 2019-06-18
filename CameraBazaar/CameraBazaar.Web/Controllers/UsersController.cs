@@ -64,6 +64,7 @@
             }
 
             var model = this.mapper.Map<UserEditViewModel>(user);
+            model.HasPassword = await this.userManager.HasPasswordAsync(user);
 
             return this.View(model);
         }
@@ -102,19 +103,44 @@
                 }
             }
 
-            // Update password
+            // Set / Update password
             if (!string.IsNullOrWhiteSpace(model.NewPassword))
             {
-                var changePasswordResult = await this.userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-                if (!changePasswordResult.Succeeded)
+                var hasPassword = await this.userManager.HasPasswordAsync(user);
+
+                if (!hasPassword)
                 {
-                    return this.View(model);
+                    // Set Password
+                    var addPasswordResult = await this.userManager.AddPasswordAsync(user, model.NewPassword);
+                    if (!addPasswordResult.Succeeded)
+                    {
+                        this.AddResultErrors(addPasswordResult);
+                        return this.View(model);
+                    }
+                }
+                else
+                {
+                    // Update Password
+                    var changePasswordResult = await this.userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                    if (!changePasswordResult.Succeeded)
+                    {
+                        this.AddResultErrors(changePasswordResult);
+                        return this.View(model);
+                    }
                 }
             }
 
             await this.signInManager.RefreshSignInAsync(user);
 
             return this.RedirectToAction(nameof(Profile));
+        }
+
+        private void AddResultErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                this.ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
     }
 }

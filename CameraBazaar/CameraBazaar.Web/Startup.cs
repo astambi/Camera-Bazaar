@@ -51,8 +51,23 @@
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequiredLength = 3;
                     // User settings
                     options.User.RequireUniqueEmail = true;
+                });
+
+            // External Authentication providers
+            services
+                .AddAuthentication()
+                .AddFacebook(options =>
+                {
+                    options.AppId = this.Configuration[WebConstants.AuthFacebookAppId];
+                    options.AppSecret = this.Configuration[WebConstants.AuthFacebookAppSecret];
+                })
+                .AddGoogle(options =>
+                {
+                    options.ClientId = this.Configuration[WebConstants.AuthGoogleClientId];
+                    options.ClientSecret = this.Configuration[WebConstants.AuthGoogleClientSecret];
                 });
 
             // App Services
@@ -93,7 +108,7 @@
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // Database Migrations
-            app.UseDatabaseMigration();
+            app.UseDatabaseMigration(this.Configuration[WebConstants.AdminPassword]);
 
             if (env.IsDevelopment())
             {

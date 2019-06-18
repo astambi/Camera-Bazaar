@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Profile Edit";
     Layout = "_LayoutLeft";
+    var isDisabled = !Model.HasPassword;
 }
 
 <header class="d-flex flex-wrap justify-content-between align-items-center">
@@ -32,7 +33,9 @@
             <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="OldPassword"></label>
-                    <input asp-for="OldPassword" class="form-control" />
+                    <input asp-for="OldPassword" class="form-control" disabled="@isDisabled" />
+                    <input asp-for="OldPassword" value="non-existing-password@123" hidden />
+                    <input asp-for="HasPassword" hidden />
                     <span asp-validation-for="OldPassword" class="text-danger"></span>
                 </div>
                 <div class="form-group">

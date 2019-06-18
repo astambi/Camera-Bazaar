@@ -46,5 +46,8 @@
         public string ConfirmPassword { get; set; }
 
         public DateTime? LastLoginTime { get; set; }
+
+        [IgnoreMap]
+        public bool HasPassword { get; set; }
     }
 }

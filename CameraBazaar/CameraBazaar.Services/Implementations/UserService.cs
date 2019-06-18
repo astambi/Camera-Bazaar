@@ -34,6 +34,13 @@
             })
             .FirstOrDefault();
 
+        public string GetUsernameByEmail(string email)
+            => this.db
+            .Users
+            .Where(u => u.Email == email)
+            .Select(u => u.UserName)
+            .FirstOrDefault();
+
         public void UpdateLastLoginTime(string userName)
         {
             var user = this.db.Users.Where(u => u.UserName == userName).FirstOrDefault();
